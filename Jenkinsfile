@@ -49,7 +49,7 @@ pipeline {
         stage ('upload App Image') {
             steps {
                 script {
-                    docker.withRegidtry(petclinicRegistry, registryCredentials) {
+                    docker.withRegistry(petclinicRegistry, registryCredentials) {
                         dockerImage.push("$BUILD_NUMBER")
                         dockerImage.push('latest') 
                     }
