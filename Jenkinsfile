@@ -42,7 +42,7 @@ pipeline {
         stage ('build app image') {
             steps {
                 script {
-                    sh "docker build -t preepetclincimg .:$BUILD_NUMBER ."
+                    sh "docker build -t preepetclincimg:$BUILD_NUMBER ."
                 }
             }
         }
