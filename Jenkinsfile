@@ -42,14 +42,14 @@ pipeline {
         stage ('build app image') {
             steps {
                 script {
-                    sh "docker build -t preepetclincimg:$BUILD_NUMBER ."
+                    dockerImage = docker.build( appRegistry + ":$BUILD_NUMBER", ".")
                 }
             }
         }
         stage ('upload App Image') {
             steps {
                 script {
-                    docker.withRegistry(petclinicRegistry, registryCredentials) {
+                    docker.withRegistry( petclinicRegistry, registryCredentials ) {
                         dockerImage.push("$BUILD_NUMBER")
                         dockerImage.push('latest') 
                     }
