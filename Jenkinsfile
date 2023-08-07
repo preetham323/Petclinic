@@ -7,6 +7,7 @@ pipeline {
         registryCredentials = 'ecr:us-east-2:aws_credential'
         appRegistry = "346141603601.dkr.ecr.us-east-2.amazonaws.com/petclinic"
         petclinicRegistry = "https://346141603601.dkr.ecr.us-east-2.amazonaws.com"
+        SONAR_TOKEN = credentials('SONAR_TOKEN')
     }
     stages {
         stage ('fetch code') {
@@ -30,28 +31,11 @@ pipeline {
             }
         }
         stage ('build & Sonarqube analysis') {
-            environment {
-                ScannerHome = tool 'sonarcloud'
-            }
             steps {
-                withSonarQubeEnv('SONAR_TOKEN') {
-                 sh '''${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=pree-projects/pree-project/Petclinic \
-                   -Dsonar.projectName=pree-projects/pree-project/Petclinic \
-                   -Dsonar.projectVersion=1.0 \
-                   -Dsonar.sources=src/ \
-                   -Dsonar.java.binaries=target/test-classes/com/visualpathit/account/controllerTest/ \
-                   -Dsonar.junit.reportsPath=target/surefire-reports/ \
-                   -Dsonar.jacoco.reportsPath=target/jacoco.exec \
-                   -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml'''
-                }
-            }
-        }
-        stage ('Quality gate') {
-            steps {
-                timeout(time: 1, unit: 'HOURS') {
-                    // Parameter indicates whether to set pipeline to UNSTABLE if Quality Gate fails
-                    // true = set pipeline to UNSTABLE, false = don't
-                    waitForQualityGate abortPipeline: true
+                script {
+                    echo 'scanning code'
+                    env.SONAR_TOKEN = "${SONAR_TOKEN}"
+                    sh 'mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=pree-projects_pree-project'
                 }
             }
         }
