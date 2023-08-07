@@ -11,7 +11,7 @@ pipeline {
     stages {
         stage ('fetch code') {
             steps {
-                git branch: 'main' url: 'https://github.com/preetham323/Petclinic.git'
+                git branch: 'petclinic' url: 'https://github.com/preetham323/Petclinic.git'
             }
         }
         stage ('test') {
