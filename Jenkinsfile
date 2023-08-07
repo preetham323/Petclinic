@@ -34,7 +34,7 @@ pipeline {
                 ScannerHome = tool 'sonarcloud'
             }
             steps {
-                withSonarQubeEnv('sonar') {
+                withSonarQubeEnv('sonarcloud') {
                  sh '''${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=pree-projects/pree-project/Petclinic \
                    -Dsonar.projectName=pree-projects/pree-project/Petclinic \
                    -Dsonar.projectVersion=1.0 \
