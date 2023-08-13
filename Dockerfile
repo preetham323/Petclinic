@@ -5,7 +5,7 @@ COPY target/*.jar /home/petclinic/
 
 WORKDIR /home/petclinic/
 
-EXPOSE 8282
+EXPOSE 8080
 
 ARG VALUE="not set"
 
